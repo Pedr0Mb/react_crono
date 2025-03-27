@@ -3,12 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const App = () => {
   const [time, setTime] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     let interval;
     
-    if (isRunning) {
+    if (status) {
       interval = setInterval(() => {
         setTime(prevTime => prevTime + 1);
       }, 1000);
@@ -17,38 +17,38 @@ const App = () => {
     }
 
     return () => clearInterval(interval);
-  }, [isRunning]);
+  }, [status]);
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const secs = (seconds % 60).toString().padStart(2, '0');
-    return `${mins}:${secs}`;
+  const formatarTempo = (seconds) => {
+    const minutos = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const segundos = (seconds % 60).toString().padStart(2, '0');
+    return `${minutos}:${segundos}`;
   };
 
-  const handleStartStop = () => {
-    setIsRunning(!isRunning);
+  const pararTempo= () => {
+    setStatus(!status);
   };
 
-  const handleReset = () => {
-    setIsRunning(false);
+  const resetarTempo= () => {
+    setStatus(false);
     setTime(0);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.timeText}>{formatTime(time)}</Text>
+      <Text style={styles.timeText}>{formatarTempo(time)}</Text>
       
       <View style={styles.buttonsContainer}>
         <TouchableOpacity 
-          style={[styles.button, isRunning ? styles.stopButton : styles.startButton]}
-          onPress={handleStartStop}
+          style={styles.button}
+          onPress={pararTempo}
         >
-          <Text style={styles.buttonText}>{isRunning ? 'Parar' : 'Começar'}</Text>
+          <Text style={styles.buttonText}>{status ? 'Parar' : 'Começar'}</Text>
         </TouchableOpacity>
         
         <TouchableOpacity 
           style={[styles.button, styles.resetButton]}
-          onPress={handleReset}
+          onPress={resetarTempo}
         >
           <Text style={styles.buttonText}>Resetar</Text>
         </TouchableOpacity>
@@ -74,20 +74,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '60%',
+    gap: 2,
   },
   button: {
     paddingVertical: 12,
     paddingHorizontal: 25,
-    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3,
-  },
-  startButton: {
-    backgroundColor: '#4CAF50',
-  },
-  stopButton: {
-    backgroundColor: '#F44336',
+    backgroundColor: '#2196F3',
   },
   resetButton: {
     backgroundColor: '#2196F3',
